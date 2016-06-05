@@ -1,0 +1,14 @@
+!!!
+%html
+  %head
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge", "http-equiv" => "X-UA-Compatible"}/
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
+    %title= t('doorkeeper.layouts.admin.nav.oauth2_provider')
+    = stylesheet_link_tag "application"
+    = csrf_meta_tags
+  %body
+    .container
+      =render partial: 'partials/navbar'
+      =render partial: 'partials/alerts'
+      = yield

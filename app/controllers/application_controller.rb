@@ -2,6 +2,10 @@ class ApplicationController < ActionController::Base
   before_filter :cors_preflight_check
   after_filter :cors_set_access_control_headers
 
+  def welcome
+    render 'welcome'
+  end
+
   def cors_preflight_check
     if request.method == 'OPTIONS'
       headers['Access-Control-Allow-Origin'] = '*'

@@ -13,6 +13,10 @@ Doorkeeper.configure do
   end
 
   # If you want to restrict access to the web interface for adding oauth authorized applications, you need to declare the block below.
+  admin_authenticator do
+    warden.authenticate!(scope: :user) && current_user.admin? || redirect_to(:root)
+  end
+
   # admin_authenticator do
   #   # Put your admin authentication logic here.
   #   # Example implementation:
@@ -51,8 +55,8 @@ Doorkeeper.configure do
   # Define access token scopes for your provider
   # For more information go to
   # https://github.com/doorkeeper-gem/doorkeeper/wiki/Using-Scopes
-  default_scopes  :public
-  optional_scopes :write
+  default_scopes  :public_profile
+  optional_scopes :email
 
   # Change the way client credentials are retrieved from the request object.
   # By default it retrieves first from the `HTTP_AUTHORIZATION` header, then
@@ -123,7 +127,7 @@ Doorkeeper::JWT.configure do
     jti_raw = [secret_key, claims[:iat]].join(':').to_s
     claims[:jti] = Digest::MD5.hexdigest(jti_raw)
 
-    data = { user: { id: user.id, email: user.email } }
+    data = { user_id: user.id }
     claims.merge(data)
   end
 
